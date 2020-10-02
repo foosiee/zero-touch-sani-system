@@ -5,14 +5,13 @@ export interface FirebaseComponentProps {
   [key: string]: any;
 }
 
-export interface SignUpFormState {
-  username: string;
-  email: string;
-  passwordOne: string;
-  passwordTwo: string;
-  error: Error | null;
-  [x: string]: string | Error | null;
+export interface FirebaseModalChild extends FirebaseComponentProps {
+  open: boolean;
+  closeCallback: () => void;
 }
+
+export interface SignUpFormModalProps extends FirebaseModalChild {}
+export interface LoginFormModalProps extends FirebaseModalChild {}
 
 export interface SignInFormState {
   email: string;

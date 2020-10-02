@@ -17,5 +17,7 @@ export class Firebase {
   SignInWithEmail = (email: string, password: string) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
+  GetCurrentUser = () => this.auth.currentUser;
+
   SignOut = () => this.auth.signOut();
 }
