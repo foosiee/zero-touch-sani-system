@@ -12,6 +12,7 @@ export interface FirebaseModalChild extends FirebaseComponentProps {
 
 export interface SignUpFormModalProps extends FirebaseModalChild {}
 export interface LoginFormModalProps extends FirebaseModalChild {}
+export interface HeaderProps extends FirebaseComponentProps {}
 
 export interface SignInFormState {
   email: string;

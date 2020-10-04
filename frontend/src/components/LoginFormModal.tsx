@@ -7,13 +7,13 @@ import {
   createStyles,
   Theme,
   MuiThemeProvider,
-  createMuiTheme,
 } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { SiteTheme } from '../utils/Theme';
 
 interface FormState {
   email: string;
@@ -24,17 +24,6 @@ const INITIAL_STATE: FormState = {
   email: '',
   password: '',
 };
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#03a9f4',
-    },
-    secondary: {
-      main: '#e3f2fd',
-    },
-  },
-});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -80,7 +69,6 @@ export function LoginFormModal(props: LoginFormModalProps) {
       ? props.firebase
           .SignInWithEmail(email, password)
           .then(() => {
-            console.log(props.firebase?.GetCurrentUser());
             setLoading(false);
             props.closeCallback();
           })
@@ -103,7 +91,7 @@ export function LoginFormModal(props: LoginFormModalProps) {
       onClose={props.closeCallback}
       className={classes.modal}
     >
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={SiteTheme}>
         <Card className={classes.card}>
           <CardContent>
             <Grid container justify="center" alignItems="center">

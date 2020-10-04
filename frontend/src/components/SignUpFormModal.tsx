@@ -7,12 +7,12 @@ import {
   createStyles,
   Theme,
   MuiThemeProvider,
-  createMuiTheme,
 } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import { SiteTheme } from '../utils/Theme';
 
 interface FormState {
   username: string;
@@ -29,17 +29,6 @@ const INITIAL_STATE: FormState = {
   passwordTwo: '',
   error: null,
 };
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#03a9f4',
-    },
-    secondary: {
-      main: '#03a9f4',
-    },
-  },
-});
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -115,7 +104,7 @@ export function SignUpFormModal(props: SignUpFormModalProps) {
       onClose={props.closeCallback}
       className={classes.modal}
     >
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={SiteTheme}>
         <Card className={classes.card}>
           <CardContent>
             <Grid container justify="center" alignItems="center">
