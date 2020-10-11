@@ -14,6 +14,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { SiteTheme } from '../utils/Theme';
+import { useHistory } from 'react-router-dom';
 
 interface FormState {
   email: string;
@@ -53,6 +54,7 @@ export function LoginFormModal(props: LoginFormModalProps) {
   const [formState, setFormState] = useState(INITIAL_STATE);
   const [isInvalid, setIsInvalid] = useState(true);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -70,6 +72,7 @@ export function LoginFormModal(props: LoginFormModalProps) {
           .SignInWithEmail(email, password)
           .then(() => {
             setLoading(false);
+            history.push('/rooms');
             props.closeCallback();
           })
           .catch((error: Error) => {

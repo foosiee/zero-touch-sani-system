@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { FirebaseContext } from './components/FirebaseContext';
+import { FirebaseContext, withFirebase } from './components/FirebaseContext';
 import { Firebase } from './utils/FirebaseInit';
+
+const FirebaseApp = withFirebase(App);
 
 ReactDOM.render(
   <React.StrictMode>
     <FirebaseContext.Provider value={new Firebase()}>
-      <App />
+      <FirebaseApp />
     </FirebaseContext.Provider>
   </React.StrictMode>,
   document.getElementById('root')

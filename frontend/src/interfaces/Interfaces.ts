@@ -12,7 +12,14 @@ export interface FirebaseModalChild extends FirebaseComponentProps {
 
 export interface SignUpFormModalProps extends FirebaseModalChild {}
 export interface LoginFormModalProps extends FirebaseModalChild {}
+export interface AddRoomModalProps extends FirebaseModalChild {}
 export interface HeaderProps extends FirebaseComponentProps {}
+export interface AppProps extends FirebaseComponentProps {}
+
+export interface UserDocument {
+  email: string;
+  roomIds?: string[];
+}
 
 export interface SignInFormState {
   email: string;
