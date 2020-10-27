@@ -81,14 +81,14 @@ def create_jwt(project_id, private_key_file, algorithm, jwt_expires_minutes):
     """
 
     token = {
-      # The time that the token was issued at
-      'iat': datetime.datetime.utcnow(),
-      # The time the token expires.
-      'exp':
-      datetime.datetime.utcnow() +
-      datetime.timedelta(minutes=jwt_expires_minutes),
-      # The audience field should always be set to the GCP project id.
-      'aud': project_id
+        # The time that the token was issued at
+        'iat': datetime.datetime.utcnow(),
+        # The time the token expires.
+        'exp':
+        datetime.datetime.utcnow() +
+        datetime.timedelta(minutes=jwt_expires_minutes),
+        # The audience field should always be set to the GCP project id.
+        'aud': project_id
     }
 
     # Read the private key file.
@@ -139,7 +139,7 @@ def on_publish(unused_client, userdata, mid):
         print('sending data over UDP {} {}'.format(client_addr, message))
         udpSerSock.sendto(message, client_addr)
         print('pending response count {}'.format(
-                len(gateway_state.pending_responses)))
+            len(gateway_state.pending_responses)))
     except KeyError:
         print('Unable to find key {}'.format(mid))
 
@@ -152,14 +152,16 @@ def on_message(unused_client, unused_userdata, message):
     """Callback when the device receives a message on a subscription."""
     payload = message.payload.decode('utf8')
     print('Received message \'{}\' on topic \'{}\' with Qos {}'.format(
-            payload, message.topic, str(message.qos)))
+        payload, message.topic, str(message.qos)))
 
     try:
         client_addr = gateway_state.subscriptions[message.topic]
         print('Relaying config[{}] to {}'.format(payload, client_addr))
-        if payload == 'ON' or payload == b'ON':
+        if payload == 'ON' or payload == b'ON' or payload == '"ON"' or payload == b'"ON"':
+            print('SENDING ON')
             udpSerSock.sendto('ON'.encode('utf8'), client_addr)
-        elif payload == 'OFF' or payload == b'OFF':
+        elif payload == 'OFF' or payload == b'OFF' or payload == '"OFF"' or payload == b'"OFF"':
+            print('SENDING OFF')
             udpSerSock.sendto('OFF'.encode('utf8'), client_addr)
         else:
             print('Unrecognized command: {}'.format(payload))
@@ -215,7 +217,7 @@ def parse_command_line_args():
         'Example Google Cloud IoT Core MQTT device connection code.'))
     parser.add_argument(
         '--project_id',
-        default=os.environ.get('GOOGLE_CLOUD_PROJECT'),
+        default='zero-touch-system',
         help='GCP cloud project name')
     parser.add_argument(
         '--registry_id', required=True,
@@ -264,9 +266,9 @@ def main():
     args = parse_command_line_args()
 
     gateway_state.mqtt_config_topic = '/devices/{}/config'.format(
-            parse_command_line_args().gateway_id)
+        parse_command_line_args().gateway_id)
     gateway_state.mqtt_error_topic = '/devices/{}/errors'.format(
-            parse_command_line_args().gateway_id)
+        parse_command_line_args().gateway_id)
 
     gateway_state.mqtt_bridge_hostname = args.mqtt_bridge_hostname
     gateway_state.mqtt_bridge_port = args.mqtt_bridge_hostname
@@ -289,7 +291,7 @@ def main():
         except socket.error:
             continue
         print('[{}]: From Address {}:{} receive data: {}'.format(
-                ctime(), client_addr[0], client_addr[1], data.decode("utf-8")))
+            ctime(), client_addr[0], client_addr[1], data.decode("utf-8")))
 
         command = json.loads(data.decode('utf-8'))
         if not command:
@@ -306,7 +308,7 @@ def main():
 
             mqtt_topic = '/devices/{}/events'.format(device_id)
             print('Publishing message to topic {} with payload \'{}\''.format(
-                    mqtt_topic, payload))
+                mqtt_topic, payload))
             _, event_mid = client.publish(mqtt_topic, payload, qos=0)
 
             message = template.format(device_id, 'event')
@@ -321,7 +323,7 @@ def main():
             print('Attaching device {}'.format(device_id))
             print(attach_topic)
             response, attach_mid = client.publish(
-                    attach_topic, attach_payload, qos=1)
+                attach_topic, attach_payload, qos=1)
 
             message = template.format(device_id, 'attach')
             udpSerSock.sendto(message.encode('utf8'), client_addr)

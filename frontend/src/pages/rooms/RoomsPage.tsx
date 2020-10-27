@@ -60,7 +60,7 @@ export class RoomsPage extends Component<FirebaseComponentProps, RoomState> {
         <FirebaseHeader />
         <MuiThemeProvider theme={SiteTheme}>
           <Container maxWidth="lg" fixed>
-            <Box boxShadow={3} height={500}>
+            <Box m={2} boxShadow={3} height={500}>
               <Box boxShadow={1}>
                 <Toolbar>
                   <Typography variant="h6" style={{ flexGrow: 1 }}>
