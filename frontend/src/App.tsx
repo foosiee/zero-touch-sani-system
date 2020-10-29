@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { PrivateRoute } from './components/PrivateRoute';
 import { AppProps } from './interfaces/Interfaces';
 import { RoomsPage } from './pages/rooms/RoomsPage';
+import { RoomPage } from './pages/room/RoomPage';
+import { RouteComponentProps } from 'react-router-dom';
 
 import { LandingPage } from './pages/landing/LandingPage';
 import { FirebaseUser } from './utils/FirebaseInit';
@@ -14,6 +16,7 @@ interface AppState {
 }
 
 const FirebaseRoomsPage = withFirebase(RoomsPage);
+const FirebaseRoomPage = withFirebase(RoomPage);
 
 class App extends Component<AppProps, AppState> {
   private unmount$: Subject<boolean>;
@@ -50,6 +53,12 @@ class App extends Component<AppProps, AppState> {
             isAuthed={!!this.state.user}
             path="/rooms"
             component={FirebaseRoomsPage}
+            exact
+          />
+          <PrivateRoute
+            isAuthed={!!this.state.user}
+            path="/rooms/:id"
+            component={FirebaseRoomPage}
             exact
           />
         </Router>

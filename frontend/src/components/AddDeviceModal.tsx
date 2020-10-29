@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from '@material-ui/core/Modal';
-import { AddRoomModalProps } from '../interfaces/Interfaces';
+import { AddDeviceModalProps } from '../interfaces/Interfaces';
 import {
   Card,
   MuiThemeProvider,
@@ -16,11 +16,11 @@ import Grid from '@material-ui/core/Grid';
 import { SiteTheme } from '../utils/Theme';
 
 interface FormState {
-  roomName: string;
+  deviceId: string;
 }
 
 const INITIAL_STATE: FormState = {
-  roomName: '',
+  deviceId: '',
 };
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export function AddRoomModal(props: AddRoomModalProps) {
+export function AddDeviceModal(props: AddDeviceModalProps) {
   const classes = useStyles();
   const [formState, setFormState] = useState(INITIAL_STATE);
   const [isInvalid, setIsInvalid] = useState(true);
@@ -63,10 +63,10 @@ export function AddRoomModal(props: AddRoomModalProps) {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     props.firebase
       ? props.firebase
-          .CreateRoom(formState.roomName)
-          .then((roomId) => {
-            props.firebase?.AddRoomIdToUser(roomId);
-            props.addRoomIdCallback(roomId);
+          .CreateDevice(formState.deviceId, props.roomId)
+          .then((deviceId) => {
+            props.firebase?.AddDeviceIdToRoom(deviceId, props.roomId);
+            props.addDeviceIdCallback(deviceId);
           })
           .then(() => {
             setFormState({ ...INITIAL_STATE });
@@ -79,8 +79,8 @@ export function AddRoomModal(props: AddRoomModalProps) {
   };
 
   useEffect(() => {
-    setIsInvalid(!!!formState.roomName);
-  }, [formState.roomName]);
+    setIsInvalid(!!!formState.deviceId);
+  }, [formState.deviceId]);
 
   return (
     <Modal
@@ -93,17 +93,17 @@ export function AddRoomModal(props: AddRoomModalProps) {
           <CardContent>
             <Grid container justify="center" alignItems="center">
               <Grid container xs={12} justify="center" alignItems="center">
-                <Typography variant="h6">Add Room</Typography>
+                <Typography variant="h6">Add Device</Typography>
               </Grid>
               <form className={classes.root} onSubmit={onSubmit}>
                 <Grid container xs={12}>
                   <TextField
-                    name="roomName"
-                    value={formState.roomName}
+                    name="deviceId"
+                    value={formState.deviceId}
                     onChange={onChange}
                     type="text"
-                    label="Room Name"
-                    id="roomName"
+                    label="Device Id"
+                    id="deviceId"
                     className={classes.input}
                   />
                 </Grid>
@@ -115,7 +115,7 @@ export function AddRoomModal(props: AddRoomModalProps) {
                     type="submit"
                     style={{ color: 'white' }}
                   >
-                    Create Room
+                    Add Device
                   </Button>
                 </Grid>
               </form>

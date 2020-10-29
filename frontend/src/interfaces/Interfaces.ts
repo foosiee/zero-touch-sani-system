@@ -1,7 +1,7 @@
 import { Firebase } from '../utils/FirebaseInit';
 
 export interface FirebaseComponentProps {
-  firebase?: Firebase | null;
+  firebase?: Firebase | undefined;
   [key: string]: any;
 }
 
@@ -12,13 +12,21 @@ export interface FirebaseModalChild extends FirebaseComponentProps {
 
 export interface SignUpFormModalProps extends FirebaseModalChild {}
 export interface LoginFormModalProps extends FirebaseModalChild {}
-export interface AddRoomModalProps extends FirebaseModalChild {}
+export interface AddRoomModalProps extends FirebaseModalChild {
+  addRoomIdCallback: (id: string) => void;
+}
+
+export interface AddDeviceModalProps extends FirebaseModalChild {
+  addDeviceIdCallback: (id: string) => void;
+  roomId: string;
+}
+
 export interface HeaderProps extends FirebaseComponentProps {}
 export interface AppProps extends FirebaseComponentProps {}
 
 export interface UserDocument {
   email: string;
-  roomIds?: string[];
+  rooms?: string[];
 }
 
 export interface SignInFormState {
@@ -26,4 +34,11 @@ export interface SignInFormState {
   password: string;
   error: Error | null;
   [x: string]: string | Error | null;
+}
+
+export interface FirebaseRoom {
+  roomName: string;
+  numberDevices: number;
+  deviceIds: string[];
+  id: string;
 }
