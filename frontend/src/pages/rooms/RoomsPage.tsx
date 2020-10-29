@@ -86,6 +86,12 @@ class RoomsPageBase extends Component<RoomPageProps, RoomState> {
     const user = this.state.userDocument;
     user?.rooms?.push(id);
     this.setState({ userDocument: user });
+
+    this.props.firebase?.GetRoom(id).then((room) => {
+      const rooms = this.state.rooms;
+      rooms.push(room);
+      this.setState({ rooms });
+    });
   }
 
   private handleRoomClick(id: string | undefined) {
