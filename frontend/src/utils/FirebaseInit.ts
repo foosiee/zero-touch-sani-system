@@ -5,7 +5,11 @@ import 'firebase/firestore';
 import { firebaseConfig } from '../config/FirebaseConfig';
 import { authState } from 'rxfire/auth';
 import { Observable } from 'rxjs';
-import { FirebaseRoom, UserDocument } from '../interfaces/Interfaces';
+import {
+  FirebaseDevice,
+  FirebaseRoom,
+  UserDocument,
+} from '../interfaces/Interfaces';
 
 export class Firebase {
   private readonly auth: app.auth.Auth;
@@ -68,6 +72,17 @@ export class Firebase {
     const room = roomDoc.data() as FirebaseRoom;
     room.id = roomId;
     return room;
+  };
+
+  GetDevice = async (deviceId: string) => {
+    const deviceDoc = await this.db.collection('/devices').doc(deviceId).get();
+    const device = deviceDoc.data() as FirebaseDevice;
+    device.id = deviceId;
+    return device;
+  };
+
+  UpdateDevice = async (device: FirebaseDevice) => {
+    await this.db.collection('/devices').doc(device.id).set(device);
   };
 
   GetUser$ = () => {

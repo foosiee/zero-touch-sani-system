@@ -15,6 +15,10 @@ export interface LoginFormModalProps extends FirebaseModalChild {}
 export interface AddRoomModalProps extends FirebaseModalChild {
   addRoomIdCallback: (id: string) => void;
 }
+export interface EditDeviceModalProps extends FirebaseModalChild {
+  device?: FirebaseDevice;
+  editCallback: (device: FirebaseDevice) => void;
+}
 
 export interface AddDeviceModalProps extends FirebaseModalChild {
   addDeviceIdCallback: (id: string) => void;
@@ -41,4 +45,9 @@ export interface FirebaseRoom {
   numberDevices: number;
   deviceIds: string[];
   id: string;
+}
+
+export interface FirebaseDevice {
+  id: string;
+  state: 'ON' | 'OFF';
 }
